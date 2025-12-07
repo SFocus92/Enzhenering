@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <g>
+    <!-- Viessmann - красный ромб -->
+    <path d="M10 30 L20 20 L30 30 L20 40 Z" fill="#E2001A"/>
+    <!-- Текст Viessmann -->
+    <text x="45" y="35" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#E2001A">Viessmann</text>
+  </g>
+  <style>
+    .dark-theme text { fill: #ffffff; }
+  </style>
+</svg>

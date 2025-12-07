@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <g>
+    <!-- Bosch - красный круг с B -->
+    <circle cx="25" cy="30" r="20" fill="#EA0016"/>
+    <text x="16" y="36" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="white">B</text>
+    <!-- Текст BOSCH -->
+    <text x="55" y="35" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#EA0016" letter-spacing="2px">BOSCH</text>
+  </g>
+  <style>
+    .dark-theme text { fill: #ffffff; }
+  </style>
+</svg>
+
+    <!-- Bosch - красный круг с B -->
+    <circle cx="25" cy="30" r="20" fill="#EA0016"/>
+    <text x="16" y="36" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="white">B</text>
+    <!-- Текст BOSCH -->
+    <text x="55" y="35" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#EA0016" letter-spacing="2px">BOSCH</text>
+  </g>
+  <style>
+    .dark-theme text { fill: #ffffff; }
+  </style>
+</svg>

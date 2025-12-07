@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 60" fill="none">
+  <g>
+    <!-- Три ромба Mitsubishi (официальный логотип) -->
+    <path d="M10 30 L20 20 L30 30 L20 40 Z" fill="#E60012"/>
+    <path d="M35 30 L45 20 L55 30 L45 40 Z" fill="#E60012"/>
+    <path d="M60 30 L70 20 L80 30 L70 40 Z" fill="#E60012"/>
+    <!-- Текст MITSUBISHI ELECTRIC -->
+    <text x="95" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000" letter-spacing="1.5px">MITSUBISHI</text>
+    <text x="95" y="45" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#666666" letter-spacing="0.5px">ELECTRIC</text>
+  </g>
+  <style>
+    .dark-theme text { fill: #ffffff; }
+    .dark-theme text:last-child { fill: #cccccc; }
+  </style>
+</svg>
+
+    <!-- Три ромба Mitsubishi (официальный логотип) -->
+    <path d="M10 30 L20 20 L30 30 L20 40 Z" fill="#E60012"/>
+    <path d="M35 30 L45 20 L55 30 L45 40 Z" fill="#E60012"/>
+    <path d="M60 30 L70 20 L80 30 L70 40 Z" fill="#E60012"/>
+    <!-- Текст MITSUBISHI ELECTRIC -->
+    <text x="95" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000" letter-spacing="1.5px">MITSUBISHI</text>
+    <text x="95" y="45" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#666666" letter-spacing="0.5px">ELECTRIC</text>
+  </g>
+  <style>
+    .dark-theme text { fill: #ffffff; }
+    .dark-theme text:last-child { fill: #cccccc; }
+  </style>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" fill="none">
+  <g>
+    <!-- LG - красный круг с LG -->
+    <circle cx="25" cy="30" r="20" fill="#A50034"/>
+    <text x="12" y="36" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">LG</text>
+    <!-- Текст LG -->
+    <text x="55" y="35" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#A50034">LG</text>
+  </g>
+  <style>
+    .dark-theme text { fill: #ffffff; }
+  </style>
+</svg>

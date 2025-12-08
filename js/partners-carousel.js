@@ -2,6 +2,14 @@ class PartnersCarousel extends HTMLElement {
     constructor() {
         super();
         this.isDark = false;
+        this.position = 0;
+        this.currentSpeed = -40; // px per second (auto-scroll left)
+        this.baseSpeed = -40;
+        this.loopWidth = 0;
+        this.isDragging = false;
+        this.lastPointerX = 0;
+        this.lastTimestamp = 0;
+        this.rafId = null;
     }
 
     connectedCallback() {
@@ -76,6 +84,7 @@ class PartnersCarousel extends HTMLElement {
         setTimeout(() => {
             this.updateTheme();
             this.setupThemeObserver();
+            this.setupCarousel();
         }, 50);
     }
 
@@ -154,6 +163,103 @@ class PartnersCarousel extends HTMLElement {
         }, 500);
     }
 
+    setupCarousel() {
+        const track = this.shadowRoot.querySelector('.partners-track');
+        if (!track) return;
+
+        const updateLoopWidth = () => {
+            // Длина первой половины (до дублирования)
+            this.loopWidth = track.scrollWidth / 2;
+        };
+
+        updateLoopWidth();
+        window.addEventListener('resize', () => {
+            updateLoopWidth();
+        });
+
+        const animate = (timestamp) => {
+            if (!this.lastTimestamp) this.lastTimestamp = timestamp;
+            const delta = (timestamp - this.lastTimestamp) / 1000; // seconds
+            this.lastTimestamp = timestamp;
+
+            if (!this.isDragging) {
+                // Плавно возвращаемся к базовой скорости, если пользователь отпустил
+                const drift = (this.baseSpeed - this.currentSpeed) * 0.05;
+                this.currentSpeed += drift;
+                this.position += this.currentSpeed * delta; // px = (px/s) * s
+            }
+
+            // Зацикливание
+            if (this.loopWidth > 0) {
+                if (this.position <= -this.loopWidth) {
+                    this.position += this.loopWidth;
+                } else if (this.position >= 0) {
+                    this.position -= this.loopWidth;
+                }
+            } else {
+                updateLoopWidth();
+            }
+
+            track.style.transform = `translateX(${this.position}px)`;
+            this.rafId = requestAnimationFrame(animate);
+        };
+
+        this.rafId = requestAnimationFrame(animate);
+
+        // Drag / swipe управление
+        const startDrag = (event) => {
+            this.isDragging = true;
+            this.lastPointerX = event.clientX;
+            this.lastTimestamp = performance.now();
+            track.style.cursor = 'grabbing';
+            track.classList.add('dragging');
+            track.setPointerCapture?.(event.pointerId);
+        };
+
+        const moveDrag = (event) => {
+            if (!this.isDragging) return;
+            const now = performance.now();
+            const deltaX = event.clientX - this.lastPointerX;
+            const deltaTime = Math.max(now - this.lastTimestamp, 1);
+
+            this.position += deltaX;
+            this.lastPointerX = event.clientX;
+            this.lastTimestamp = now;
+            this.currentSpeed = (deltaX / deltaTime) * 1000; // px per second на основании жеста
+
+            // Ограничиваем скорость, чтобы не было рывков
+            const maxSpeed = 450;
+            this.currentSpeed = Math.max(Math.min(this.currentSpeed, maxSpeed), -maxSpeed);
+
+            track.style.transform = `translateX(${this.position}px)`;
+        };
+
+        const endDrag = (event) => {
+            if (!this.isDragging) return;
+            this.isDragging = false;
+            // Если пользователь отпустил почти без движения, возвращаем базовую скорость
+            if (Math.abs(this.currentSpeed) < Math.abs(this.baseSpeed) / 2) {
+                this.currentSpeed = this.baseSpeed;
+            }
+            track.style.cursor = 'grab';
+            track.classList.remove('dragging');
+            if (event?.pointerId && track.releasePointerCapture) {
+                track.releasePointerCapture(event.pointerId);
+            }
+        };
+
+        track.addEventListener('pointerdown', startDrag);
+        track.addEventListener('pointermove', moveDrag);
+        ['pointerup', 'pointercancel', 'pointerleave'].forEach(evt => {
+            track.addEventListener(evt, endDrag);
+        });
+
+    }
+
+    disconnectedCallback() {
+        if (this.rafId) cancelAnimationFrame(this.rafId);
+    }
+
     render(partners) {
         this.shadowRoot.innerHTML = `
             <style>
@@ -198,12 +304,14 @@ class PartnersCarousel extends HTMLElement {
                 .partners-track {
                     display: flex;
                     gap: 60px;
-                    animation: scroll 40s linear infinite;
                     will-change: transform;
+                    cursor: grab;
+                    touch-action: pan-y;
+                    user-select: none;
                 }
                 
-                .partners-track:hover {
-                    animation-play-state: paused;
+                .partners-track.dragging {
+                    cursor: grabbing;
                 }
                 
                 .partner-item {

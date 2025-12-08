@@ -249,12 +249,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = Object.fromEntries(formData);
     // Simple validation
     if (!data.name || !data.email || !data.message) {
-        showNotification('Пожалуйста, заполните все обязательные поля.', 'error');
+        showNotification('Пожалуйста, заполните все обязательные поля.', 'error', contactForm);
         return;
     }
     
     // Simulate form submission
-    showNotification('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.', 'success');
+    showNotification('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.', 'success', contactForm);
 this.reset();
             
             // In a real application, you would send the data to a server here
@@ -277,20 +277,53 @@ this.reset();
     }
     
     // Notification System
-    function showNotification(message, type = 'info') {
+    function showNotification(message, type = 'info', anchorEl = null) {
+        const isDark = document.documentElement.classList.contains('dark');
+        const baseColors = {
+            success: isDark ? 'bg-green-900/70 text-green-100 border-green-600/60' : 'bg-green-50 text-green-800 border-green-200',
+            error: isDark ? 'bg-red-900/70 text-red-100 border-red-600/60' : 'bg-red-50 text-red-800 border-red-200',
+            info: isDark ? 'bg-blue-900/70 text-blue-100 border-blue-600/60' : 'bg-blue-50 text-blue-800 border-blue-200'
+        };
+
+        // Если передан контекст (например, форма) — показываем уведомление под кнопкой
+        if (anchorEl) {
+            const form = anchorEl.closest('form') || anchorEl;
+            let container = form.parentElement.querySelector('.form-inline-notification');
+
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'form-inline-notification';
+                form.insertAdjacentElement('afterend', container);
+            }
+
+            container.innerHTML = `
+                <div class="mt-4 w-full border rounded-xl px-4 py-3 shadow-lg flex items-start gap-3 text-sm font-semibold transition-all duration-300 ${baseColors[type] || baseColors.info}">
+                    <span class="mt-0.5">${message}</span>
+                </div>
+            `;
+
+            // Удаляем уведомление через 6 секунд
+            setTimeout(() => {
+                if (container.parentElement) {
+                    container.remove();
+                }
+            }, 6000);
+
+            return;
+        }
+
+        // Фолбэк: плавающее уведомление
         const notification = document.createElement('div');
         notification.className = `fixed top-6 right-6 z-50 px-6 py-4 rounded-lg shadow-xl transform transition-all duration-300 translate-x-full ${type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500'} text-white`;
         notification.textContent = message;
         
         document.body.appendChild(notification);
         
-        // Animate in
         setTimeout(() => {
             notification.classList.remove('translate-x-full');
             notification.classList.add('translate-x-0');
         }, 10);
         
-        // Remove after 5 seconds
         setTimeout(() => {
             notification.classList.remove('translate-x-0');
             notification.classList.add('translate-x-full');

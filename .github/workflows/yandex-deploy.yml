@@ -12,12 +12,18 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install AWS CLI
-        run: pip install awscli
+        run: pip3 install awscli
 
       - name: Deploy to Yandex Object Storage
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.YC_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.YC_SECRET_ACCESS_KEY }}
         run: |
-          aws s3 sync . s3://kriminzheering --endpoint-url=https://storage.yandexcloud.net --delete --exclude ".git*" --exclude ".github/*" --exclude "*.md
-          
+          aws s3 sync . s3://kriminzhenering \
+            --endpoint-url=https://storage.yandexcloud.net \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "*.md" \
+            --exclude ".gitignore" \
+            --cache-control "public, max-age=3600"

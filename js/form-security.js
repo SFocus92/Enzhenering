@@ -5,7 +5,7 @@
     'use strict';
 
     // Конфигурация (замените на реальные значения из .env)
-    const YANDEX_SMARTCAPTCHA_SITE_KEY = 'YOUR_SMARTCAPTCHA_SITE_KEY'; // Замените на ваш ключ
+    const YANDEX_SMARTCAPTCHA_SITE_KEY = 'ysc1_8s4L3uIuGHXBmULr0VSVYAP9m6MsjkOeNUJ5o63f8b791'; // Замените на ваш ключ
     
     // Rate limiting - клиентская защита
     let lastSubmitTime = 0;
